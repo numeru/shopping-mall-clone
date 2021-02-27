@@ -1,6 +1,11 @@
-1. make dev.js file inside config folder
-2. put mongoDB info into dev.js file
-3. Type " npm install " inside the root directory ( Download Server Dependencies )
-4. Type " npm install " inside the client directory ( Download Front-end Dependencies )
+# 주요 페이지
 
-npm run dev
+## 1. [Landing Page](https://github.com/numeru/shopping-mall-clone/tree/main/client/src/components/views/LandingPage)
+
+- 등록된 상품을 볼 수 있다.
+- checkbox, radiobox와 search를 통해 조건에 맞는 상품을 확인할 수 있다.
+
+## 2. [Product Upload Page](https://github.com/numeru/shopping-mall-clone/tree/main/client/src/components/views/UploadProductPage)
+
+- 상품을 업로드 할 수 있다.
+- react-dropzone을 이용하여 image를 업로드한다.
