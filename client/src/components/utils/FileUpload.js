@@ -9,12 +9,10 @@ function FileUpload(props) {
   // File을 업로드 했을 때
   const dropHandler = (files) => {
     let formData = new FormData();
-    const config = {
-      header: { "content-type": "multipart/form-data" },
-    };
+
     formData.append("file", files[0]);
 
-    axios.post("/api/product/image", formData, config).then((response) => {
+    axios.post("/api/product/image", formData).then((response) => {
       if (response.data.success) {
         setImages([...Images, response.data.filePath]);
         props.refreshFunction([...Images, response.data.filePath]);
