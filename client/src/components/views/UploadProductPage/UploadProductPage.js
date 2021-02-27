@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form } from "antd";
-// import FileUpload from "../../utils/FileUpload";
+import FileUpload from "../../utils/FileUpload";
 import Axios from "axios";
 
 const Continents = [
@@ -35,10 +35,12 @@ const UploadProductPage = (props) => {
     setContinent(event.currentTarget.value);
   };
 
+  // refreshFunction
   const updateImages = (newImages) => {
     setImages(newImages);
   };
 
+  // submit
   const submitHandler = (event) => {
     event.preventDefault();
 
@@ -73,9 +75,9 @@ const UploadProductPage = (props) => {
         <h2> 여행 상품 업로드</h2>
       </div>
 
-      <Form onSubmit={submitHandler}>
+      <form onSubmit={submitHandler}>
         {/* DropZone */}
-        {/* <FileUpload refreshFunction={updateImages} /> */}
+        <FileUpload refreshFunction={updateImages} />
 
         <br />
         <br />
@@ -102,7 +104,7 @@ const UploadProductPage = (props) => {
         <br />
         <br />
         <button type="submit">확인</button>
-      </Form>
+      </form>
     </div>
   );
 };
