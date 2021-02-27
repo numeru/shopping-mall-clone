@@ -21,7 +21,7 @@ yarn add react-dropzone
 
 - 과정
 
-0. 기본 구성
+#### 0. 기본 구성
 
 ```
 {/* FileUpload.js */}
@@ -62,41 +62,44 @@ yarn add react-dropzone
 </div>;
 ```
 
-1. image의 filePath를 저장하는 배열
+---
 
-부모 컴포넌트의 images를 업데이트하는데 이용한다.  
-업로드한 이미지를 보여주는 부분에서도 사용한다.
+#### 1. image의 filePath를 저장하는 배열
+
+- 부모 컴포넌트의 images를 업데이트하는데 이용한다.
+- 업로드한 이미지를 보여주는 부분에서도 사용한다.
 
 ```
 const [Images, setImages] = useState([]);
 ```
 
-2. image upload
+---
 
-function dropHandler  
-dropzone을 이용한다.
+#### 2. image upload
 
 - 반드시 formData를 전달해주어야 한다.
-
-```
-let formData = new FormData();
-formData.append("file", files[0]);
-```
-
 - post에 성공하면, setImages를 통해 업데이트해준다.
 
 ```
-axios.post("/api/product/image", formData).then((response) => {
-  if (response.data.success) {
-    setImages([...Images, response.data.filePath]);
-    props.refreshFunction([...Images, response.data.filePath]);
-  } else {
-    alert("파일을 저장하는데 실패했습니다.");
-  }
-});
+const dropHandler = (files) => {
+  let formData = new FormData();
+
+  formData.append("file", files[0]);
+
+  axios.post("/api/product/image", formData).then((response) => {
+    if (response.data.success) {
+      setImages([...Images, response.data.filePath]);
+      props.refreshFunction([...Images, response.data.filePath]);
+    } else {
+      alert("파일을 저장하는데 실패했습니다.");
+    }
+  });
+};
 ```
 
-3. show uploaded images
+---
+
+#### 3. show selected images
 
 ```
 {
@@ -106,6 +109,20 @@ axios.post("/api/product/image", formData).then((response) => {
     </div>
   ));
 }
+```
+
+---
+
+#### 4. delete selected image
+
+```
+const deleteHandler = (image) => {
+  const currentIndex = Images.indexOf(image);
+  let newImages = [...Images];
+  newImages.splice(currentIndex, 1);
+  setImages(newImages);
+  props.refreshFunction(newImages);
+};
 ```
 
 ---
