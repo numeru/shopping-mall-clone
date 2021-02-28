@@ -41,6 +41,9 @@ function RightMenu(props) {
             <a href="/user/cart">Cart</a>
           </Badge>
         </Menu.Item>
+        <Menu.Item key="history">
+          <a href="/history">History</a>
+        </Menu.Item>
         <Menu.Item key="logout">
           <a onClick={logoutHandler}>Logout</a>
         </Menu.Item>
