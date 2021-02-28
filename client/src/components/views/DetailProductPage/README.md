@@ -14,7 +14,7 @@
 
 ### 1. image slide
 
-- react-image-gallery 이용.
+#### - react-image-gallery 이용.
 
 ```
 npm install react-image-gallery
@@ -26,9 +26,9 @@ npm install react-image-gallery
 @import "~react-image-gallery/styles/css/image-gallery.css";
 ```
 
-- 과정
+#### - 과정
 
-#### 0. 기본 구성
+##### 0. 기본 구성
 
 ```
 <ProductImage product={Product} />
@@ -37,7 +37,7 @@ npm install react-image-gallery
 
 ---
 
-#### 1. 보여줄 product를 담은 state
+##### 1. 보여줄 product를 담은 state
 
 ```
 const [Product, setProduct] = useState({});
@@ -45,7 +45,7 @@ const [Product, setProduct] = useState({});
 
 ---
 
-#### 2. product ID로 정보를 가져온다.
+##### 2. product ID로 정보를 가져온다.
 
 - product id는 match를 이용하여 url에서 가져온다.
 
@@ -64,7 +64,7 @@ useEffect(() => {
 
 ---
 
-#### 3. ImageGallery에 image들의 정보를 전달한다.
+##### 3. ImageGallery에 image들의 정보를 전달한다.
 
 ```
 useEffect(() => {
@@ -88,7 +88,7 @@ useEffect(() => {
 
 ### 2. add to cart button
 
-- redux에서 product id를 받아 post한다.
+#### - redux에서 product id를 받아 post한다.
 
 ```
 <Button onClick={clickHandler}>
