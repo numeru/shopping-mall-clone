@@ -14,3 +14,8 @@
 
 - 선택한 상품의 세부정보를 볼 수 있다.
 - react-image-gallery를 이용하여 image slide를 만든다.
+
+## 4. [Cart Page](https://github.com/numeru/shopping-mall-clone/tree/main/client/src/components/views/CartPage)
+
+- 장바구니에 담은 상품을 볼 수 있다.
+- Paypal을 통해 결제가 가능하다.
