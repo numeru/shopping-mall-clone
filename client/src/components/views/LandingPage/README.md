@@ -4,11 +4,11 @@
 조건에 맞는 상품을 확인할 수 있다.
 
 - LandingPage.js
-  - Sections
-    - Datas.js
-    - CheckBox.js
-    - RadioBox.js
-    - SearchFeature.js
+- Sections
+  - Datas.js
+  - CheckBox.js
+  - RadioBox.js
+  - SearchFeature.js
 
 ---
 
