@@ -18,9 +18,9 @@
 
 checkbox, radiobox와 search로 조건에 맞는 상품만 불러온다.
 
-- 과정
+#### - 과정
 
-#### 0. 기본 구성
+##### 0. 기본 구성
 
 ```
 {/* CheckBox */}
@@ -74,7 +74,7 @@ const price = [
 
 ---
 
-#### 1. 필요한 state.
+##### 1. 필요한 state.
 
 - 상품을 담는 배열 products : 배열 안에 담긴 상품들이 화면에 보인다.
 
@@ -112,7 +112,7 @@ const [SearchTerm, setSearchTerm] = useState("");
 
 ---
 
-#### 2. CheckBox
+##### 2. CheckBox
 
 - 체크된 옵션의 index를 담은 배열 checked
 
@@ -142,7 +142,7 @@ const handleToggle = (value) => {
 
 ---
 
-#### 3. RadioBox
+##### 3. RadioBox
 
 - 체크된 옵션의 id를 담는 value : 한가지 옵션만 선택될 수 있다.
 
@@ -161,7 +161,7 @@ const handleChange = (event) => {
 
 ---
 
-#### 4. Search
+##### 4. Search
 
 - 입력한 문자열을 부모 컴포넌트의 searchTerm에 전달한다.
 
@@ -173,7 +173,7 @@ const searchHandler = (event) => {
 
 ---
 
-#### 5. products를 불러오는 function
+##### 5. products를 불러오는 function
 
 - mount 직후 모든 products를 불러온다.
 
