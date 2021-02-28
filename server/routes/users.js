@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User");
 const { Product } = require("../models/Product");
-// const { Payment } = require("../models/Payment");
+const { Payment } = require("../models/Payment");
 
 const { auth } = require("../middleware/auth");
-// const async = require("async");
+const async = require("async");
 
 //=================================
 //             User
