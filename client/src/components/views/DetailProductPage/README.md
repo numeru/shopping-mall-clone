@@ -86,7 +86,37 @@ useEffect(() => {
 
 ---
 
-### 2. product info
+### 2. add to cart button
+
+- redux에서 product id를 받아 post한다.
+
+```
+<Button onClick={clickHandler}>
+  Add to Cart
+</Button>
+
+const clickHandler = () => {
+  dispatch(addToCart(props.product._id));
+};
+
+export function addToCart(id) {
+  let body = {
+    productId: id,
+  };
+  const request = axios
+    .post(`${USER_SERVER}/addToCart`, body)
+    .then((response) => response.data);
+
+  return {
+    type: ADD_TO_CART,
+    payload: request,
+  };
+}
+```
+
+---
+
+### 3. product info
 
 ```
 <Descriptions title="Product Info">
