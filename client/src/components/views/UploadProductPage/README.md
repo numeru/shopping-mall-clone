@@ -11,7 +11,7 @@
 
 ### 1. image upload
 
-- react-dropzone 이용.
+#### - react-dropzone 이용.
 
 ```
 npm install --save react-dropzone
@@ -19,9 +19,9 @@ npm install --save react-dropzone
 yarn add react-dropzone
 ```
 
-- 과정
+#### - 과정
 
-#### 0. 기본 구성
+##### 0. 기본 구성
 
 ```
 {/* FileUpload.js */}
@@ -64,7 +64,7 @@ yarn add react-dropzone
 
 ---
 
-#### 1. image의 filePath를 저장하는 배열
+##### 1. image의 filePath를 저장하는 배열
 
 - 부모 컴포넌트의 images를 업데이트하는데 이용한다.
 - 업로드한 이미지를 보여주는 부분에서도 사용한다.
@@ -75,7 +75,7 @@ const [Images, setImages] = useState([]);
 
 ---
 
-#### 2. image upload
+##### 2. image upload
 
 - 반드시 formData를 전달해주어야 한다.
 - post에 성공하면, setImages를 통해 업데이트해준다.
@@ -99,7 +99,7 @@ const dropHandler = (files) => {
 
 ---
 
-#### 3. show selected images
+##### 3. show selected images
 
 ```
 {
@@ -113,7 +113,7 @@ const dropHandler = (files) => {
 
 ---
 
-#### 4. delete selected image
+##### 4. delete selected image
 
 ```
 const deleteHandler = (image) => {
