@@ -13,9 +13,9 @@ Paypal을 통해 결제가 가능하다.
 
 ### 1. show and remove items
 
-- 과정
+#### - 과정
 
-#### 0. 기본 구성
+##### 0. 기본 구성
 
 ```
 <div>
@@ -32,7 +32,7 @@ Paypal을 통해 결제가 가능하다.
 
 ---
 
-#### 1. redux User state cart 안에 상품이 들어있는지 확인
+##### 1. redux User state cart 안에 상품이 들어있는지 확인
 
 - 상품이 있다면 담은 수를 포함한 상품 정보를 담은 redux의 cartDetail를 만든다.
 - 그 후, 가격의 총합을 계산한다.
@@ -76,7 +76,7 @@ case GET_CART_ITEMS:
     return { ...state, cartDetail: action.payload };
 ```
 
-#### 2. UserCardBlock
+##### 2. UserCardBlock
 
 - 담은 상품을 보여주는 컴포넌트
 - cartDetail을 전달받는다.
@@ -106,7 +106,7 @@ const renderItems = () =>
 
 ---
 
-#### 3. remove item
+##### 3. remove item
 
 ```
 const removeFromCart = (productId) => {
