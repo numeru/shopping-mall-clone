@@ -1,6 +1,6 @@
 # Shopping-mall-clone
 
-## MongoDB + Express + React + Node
+MongoDB + Express + React + Node
 
 ---
 
