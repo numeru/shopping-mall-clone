@@ -4,6 +4,15 @@
 
 ---
 
+## 설치 방법
+
+- config 폴더에 dev.js파일을 만든다.
+- mongoDB 정보를 dev.js에 넣는다.
+- root directory에서 npm install
+- client directory에서 npm install
+
+---
+
 ## 주요 페이지
 
 ### [Landing Page](https://github.com/numeru/shopping-mall-clone/tree/main/client/src/components/views/LandingPage)
