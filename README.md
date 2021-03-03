@@ -2,6 +2,11 @@
 
 MongoDB + Express + React + Node
 
+```
+npm run dev
+
+```
+
 ---
 
 ## 설치 방법
