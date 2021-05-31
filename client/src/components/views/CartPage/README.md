@@ -146,7 +146,7 @@ yarn add react-paypal-express-checkout
 
 ##### 0. 기본구성
 
-```
+```js
 // CartPage.js
 {ShowTotal && <Paypal total={Total} onSuccess={transactionSuccess} />}
 

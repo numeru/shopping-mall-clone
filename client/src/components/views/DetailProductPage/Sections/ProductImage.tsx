@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 import ImageGallery from "react-image-gallery";
+import { CartDetail, Images } from "_reducers/user_reducer";
 
-function ProductImage(props) {
-  const [Images, setImages] = useState([]);
+type Props = {
+  product: CartDetail;
+};
+
+function ProductImage({ product }: Props) {
+  const [Images, setImages] = useState<Images[]>([]);
 
   useEffect(() => {
-    if (props.product.images && props.product.images.length > 0) {
-      let images = [];
+    if (product.images && product.images.length > 0) {
+      let images: Images[] = [];
 
-      props.product.images.map((item) => {
+      product.images.map((item) => {
         images.push({
           original: `http://localhost:5000/${item}`,
           thumbnail: `http://localhost:5000/${item}`,
@@ -16,7 +21,7 @@ function ProductImage(props) {
       });
       setImages(images);
     }
-  }, [props.product]);
+  }, [product]);
 
   return (
     <div>

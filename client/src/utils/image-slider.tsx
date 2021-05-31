@@ -1,11 +1,16 @@
 import React from "react";
-import { Col, Card, Row, Carousel } from "antd";
+import { Carousel } from "antd";
+import { Images } from "_reducers/user_reducer";
 
-function ImageSlider(props) {
+type Props = {
+  images: Images[];
+};
+
+function ImageSlider({ images }: Props) {
   return (
     <div>
       <Carousel autoplay>
-        {props.images.map((image, index) => (
+        {images.map((image, index) => (
           <div key={index}>
             <img
               style={{ width: "100%", maxHeight: "150px" }}

@@ -2,39 +2,42 @@ import React, { useState } from "react";
 import Dropzone from "react-dropzone";
 import axios from "axios";
 
-function FileUpload(props) {
+type Props = {
+  refreshFunction: (newImages: string[]) => void;
+};
+
+function FileUpload({ refreshFunction }: Props) {
   // 이미지의 filePath를 저장하는 배열
-  const [Images, setImages] = useState([]);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   // File을 업로드 했을 때
-  const dropHandler = (files) => {
-    let formData = new FormData();
+  const handleDropImage = (files: File[]) => {
+    const formData = new FormData();
 
     formData.append("file", files[0]);
 
     axios.post("/api/product/image", formData).then((response) => {
       if (response.data.success) {
-        setImages([...Images, response.data.filePath]);
-        props.refreshFunction([...Images, response.data.filePath]);
+        setUploadedImages([...uploadedImages, response.data.filePath]);
+        refreshFunction([...uploadedImages, response.data.filePath]);
       } else {
         alert("파일을 저장하는데 실패했습니다.");
       }
     });
   };
 
-  // 이미지를 클릭하면 삭제
-  const deleteHandler = (image) => {
-    const currentIndex = Images.indexOf(image);
-    let newImages = [...Images];
-    newImages.splice(currentIndex, 1);
-    setImages(newImages);
-    props.refreshFunction(newImages);
+  const handleDelete = (image: string) => {
+    const currentIndex = uploadedImages.indexOf(image);
+    let newuploadedImages = [...uploadedImages];
+    newuploadedImages.splice(currentIndex, 1);
+    setUploadedImages(newuploadedImages);
+    refreshFunction(newuploadedImages);
   };
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       {/* 이미지 업로드 하는 곳 */}
-      <Dropzone onDrop={dropHandler}>
+      <Dropzone onDrop={handleDropImage}>
         {({ getRootProps, getInputProps }) => (
           <div
             style={{
@@ -48,9 +51,7 @@ function FileUpload(props) {
             {...getRootProps()}
           >
             <input {...getInputProps()} />
-            <button type="plus" style={{ fontSize: "0.5rem" }}>
-              upload
-            </button>
+            <button type="button" style={{ fontSize: "0.5rem" }}>upload</button>
           </div>
         )}
       </Dropzone>
@@ -64,8 +65,8 @@ function FileUpload(props) {
           overflowX: "scroll",
         }}
       >
-        {Images.map((image, index) => (
-          <div onClick={() => deleteHandler(image)} key={index}>
+        {uploadedImages.map((image, index) => (
+          <div onClick={() => handleDelete(image)} key={index}>
             <img
               style={{ minWidth: "300px", width: "300px", height: "240px" }}
               src={`http://localhost:5000/${image}`}

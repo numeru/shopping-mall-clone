@@ -2,41 +2,55 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Col, Card, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
-import ImageSlider from "../../utils/ImageSlider";
+import ImageSlider from "../../../utils/image-slider";
 import Checkbox from "./Sections/CheckBox";
 import Radiobox from "./Sections/RadioBox";
 import SearchFeature from "./Sections/SearchFeature";
 import { continents, price } from "./Sections/Datas";
+import { CartDetail } from "_reducers/user_reducer";
+
+type Filter = {
+  continents: number[];
+  price: number[];
+};
+
+type Body = {
+  skip: number;
+  limit: number;
+  loadMore?: boolean;
+  filters?: Filter;
+  searchTerm?: string;
+};
 
 function LandingPage() {
-  const [Products, setProducts] = useState([]);
+  const [products, setProducts] = useState<CartDetail[]>([]);
 
   // skip번째 부터 limit만큼 가져온다.
-  const [Skip, setSkip] = useState(0);
-  const [Limit, setLimit] = useState(8);
+  const [skip, setSkip] = useState(0);
+  const [limit, setLimit] = useState(8);
 
   // 가져오는 상품의 수. limit보다 작을 경우 더 가져올 상품이 없으므로 더보기 버튼을 숨긴다.
-  const [PostSize, setPostSize] = useState(0);
-  const [Filters, setFilters] = useState({
+  const [postSize, setPostSize] = useState(0);
+  const [filters, setFilters] = useState<Filter>({
     continents: [],
     price: [],
   });
-  const [SearchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    let body = {
-      skip: Skip,
-      limit: Limit,
+    const body = {
+      skip,
+      limit,
     };
 
     getProducts(body);
   }, []);
 
-  const getProducts = (body) => {
+  const getProducts = (body: Body) => {
     axios.post("/api/product/products", body).then((response) => {
       if (response.data.success) {
         if (body.loadMore) {
-          setProducts([...Products, ...response.data.productInfo]);
+          setProducts([...products, ...response.data.productInfo]);
         } else {
           setProducts(response.data.productInfo);
         }
@@ -48,19 +62,19 @@ function LandingPage() {
   };
 
   const loadMoreHanlder = () => {
-    let skip = Skip + Limit;
-    let body = {
-      skip: skip,
-      limit: Limit,
+    const newSkip = skip + limit;
+    const body = {
+      skip: newSkip,
+      limit,
       loadMore: true,
-      filters: Filters,
+      filters,
     };
 
     getProducts(body);
-    setSkip(skip);
+    setSkip(newSkip);
   };
 
-  const renderCards = Products.map((product, index) => {
+  const renderCards = products.map((product, index) => {
     return (
       <Col lg={6} md={8} xs={24} key={index}>
         <Card
@@ -76,20 +90,20 @@ function LandingPage() {
     );
   });
 
-  const showFilteredResults = (filters) => {
-    let body = {
+  const showFilteredResults = (filters: Filter) => {
+    const body = {
       skip: 0,
-      limit: Limit,
-      filters: filters,
+      limit,
+      filters,
     };
 
     getProducts(body);
     setSkip(0);
   };
 
-  const handlePrice = (value) => {
+  const handlePrice = (value: string): number[] => {
     const data = price;
-    let array = [];
+    let array: number[] = [];
 
     for (let key in data) {
       if (data[key]._id === parseInt(value, 10)) {
@@ -99,26 +113,28 @@ function LandingPage() {
     return array;
   };
 
-  const handleFilters = (filters, category) => {
-    const newFilters = { ...Filters };
-
-    newFilters[category] = filters;
-
-    console.log("filters", filters);
+  const handleFilters = (
+    aFilter: string | number[],
+    category: "price" | "continents"
+  ) => {
+    let newFilters: Filter = { ...filters };
 
     if (category === "price") {
-      let priceValues = handlePrice(filters);
+      const priceValues = handlePrice(aFilter as string);
       newFilters[category] = priceValues;
+    }
+    if (category === "continents") {
+      newFilters[category] = aFilter as number[];
     }
     showFilteredResults(newFilters);
     setFilters(newFilters);
   };
 
-  const updateSearchTerm = (newSearchTerm) => {
-    let body = {
+  const updateSearchTerm = (newSearchTerm: string) => {
+    const body = {
       skip: 0,
-      limit: Limit,
-      filters: Filters,
+      limit,
+      filters,
       searchTerm: newSearchTerm,
     };
 
@@ -138,17 +154,11 @@ function LandingPage() {
       <Row gutter={[16, 16]}>
         <Col lg={12} xs={24}>
           {/* CheckBox */}
-          <Checkbox
-            list={continents}
-            handleFilters={(filters) => handleFilters(filters, "continents")}
-          />
+          <Checkbox list={continents} handleFilters={handleFilters} />
         </Col>
         <Col lg={12} xs={24}>
           {/* RadioBox */}
-          <Radiobox
-            list={price}
-            handleFilters={(filters) => handleFilters(filters, "price")}
-          />
+          <Radiobox list={price} handleFilters={handleFilters} />
         </Col>
       </Row>
 
@@ -170,7 +180,7 @@ function LandingPage() {
 
       <br />
 
-      {PostSize >= Limit && (
+      {postSize >= limit && (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <button onClick={loadMoreHanlder}>더보기</button>
         </div>

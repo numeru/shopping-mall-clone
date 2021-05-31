@@ -1,4 +1,15 @@
-const continents = [
+export type Continents = {
+  _id: number;
+  name: string;
+};
+
+export type Price = {
+  _id: number;
+  name: string;
+  array: number[];
+};
+
+const continents: Continents[] = [
   {
     _id: 1,
     name: "Africa",
@@ -29,7 +40,7 @@ const continents = [
   },
 ];
 
-const price = [
+const price: Price[] = [
   {
     _id: 0,
     name: "Any",

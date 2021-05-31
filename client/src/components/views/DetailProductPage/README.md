@@ -1,7 +1,7 @@
 # Detail Product Page
 
 선택한 상품의 세부 정보를 볼 수 있는 페이지.
-장바구니에 담을 수 있따.
+장바구니에 담을 수 있다.
 
 - DetailProductPage.js
 - Sections
@@ -49,7 +49,7 @@ const [Product, setProduct] = useState({});
 
 - product id는 match를 이용하여 url에서 가져온다.
 
-```
+```js
 const productId = props.match.params.productId;
 
 useEffect(() => {
@@ -66,7 +66,7 @@ useEffect(() => {
 
 ##### 3. ImageGallery에 image들의 정보를 전달한다.
 
-```
+```js
 useEffect(() => {
   if (props.product.images && props.product.images.length > 0) {
     let images = [];
@@ -81,7 +81,7 @@ useEffect(() => {
   }
 }, [props.product]);
 
-<ImageGallery items={Images} />
+<ImageGallery items={Images} />;
 ```
 
 ---
@@ -90,10 +90,8 @@ useEffect(() => {
 
 #### - redux에서 product id를 받아 post한다.
 
-```
-<Button onClick={clickHandler}>
-  Add to Cart
-</Button>
+```js
+<Button onClick={clickHandler}>Add to Cart</Button>;
 
 const clickHandler = () => {
   dispatch(addToCart(props.product._id));
@@ -118,13 +116,13 @@ export function addToCart(id) {
 
 ### 3. product info
 
-```
+```html
 <Descriptions title="Product Info">
   <Descriptions.Item label="Price">{props.product.price}</Descriptions.Item>
   <Descriptions.Item label="Sold">{props.product.sold}</Descriptions.Item>
   <Descriptions.Item label="View">{props.product.views}</Descriptions.Item>
   <Descriptions.Item label="Description">
     {props.product.description}
-  </Descriptions.Item>
-</Descriptions>;
+  </Descriptions.Item> </Descriptions
+>;
 ```

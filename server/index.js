@@ -43,6 +43,9 @@ app.use("/api/product", require("./routes/product"));
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client
 app.use("/uploads", express.static("uploads"));
 
+app.use("/api/comment", require("./routes/comment"));
+app.use("/api/like", require("./routes/like"));
+
 // Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
   // Set static folder

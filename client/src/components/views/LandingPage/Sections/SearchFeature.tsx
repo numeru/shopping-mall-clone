@@ -3,12 +3,16 @@ import { Input } from "antd";
 
 const { Search } = Input;
 
-function SearchFeature(props) {
+type Props = {
+  refreshFunction: (newSearchTerm: string) => void;
+};
+
+function SearchFeature({ refreshFunction }: Props) {
   const [SearchTerm, setSearchTerm] = useState("");
 
-  const searchHandler = (event) => {
+  const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.currentTarget.value);
-    props.refreshFunction(event.currentTarget.value);
+    refreshFunction(event.currentTarget.value);
   };
 
   return (

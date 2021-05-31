@@ -3,25 +3,48 @@ import axios from "axios";
 import ProductImage from "./Sections/ProductImage";
 import ProductInfo from "./Sections/ProductInfo";
 import { Row, Col } from "antd";
+import { CartDetail } from "_reducers/user_reducer";
 
-function DetailProductPage(props) {
-  const productId = props.match.params.productId;
+type Match<P> = {
+  params: P;
+  isExact: boolean;
+  path: string;
+  url: string;
+};
 
-  const [Product, setProduct] = useState({});
+type Props = {
+  match: Match<{ productId: string }>;
+};
+
+function DetailProductPage({ match }: Props) {
+  const productId = match.params.productId;
+
+  const [product, setProduct] = useState<CartDetail>({
+    continents: 0,
+    createdAt: "",
+    updatedAt: "",
+    title: "",
+    _id: "",
+    price: 0,
+    quantity: 0,
+    images: [],
+    sold: 0,
+    views: 0,
+    description: "",
+  });
 
   useEffect(() => {
     axios
       .get(`/api/product/products_by_id?id=${productId}&type=single`)
       .then((response) => {
         setProduct(response.data[0]);
-      })
-      .catch((err) => alert(err));
+      });
   }, []);
 
   return (
     <div style={{ width: "100%", padding: "3rem 4rem" }}>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <h1>{Product.title}</h1>
+        <h1>{product.title}</h1>
       </div>
 
       <br />
@@ -29,11 +52,11 @@ function DetailProductPage(props) {
       <Row gutter={[16, 16]}>
         <Col lg={12} sm={24}>
           {/* ProductImage */}
-          <ProductImage product={Product} />
+          <ProductImage product={product} />
         </Col>
         <Col lg={12} sm={24}>
           {/* ProductInfo */}
-          <ProductInfo product={Product} />
+          <ProductInfo product={product} />
         </Col>
       </Row>
     </div>

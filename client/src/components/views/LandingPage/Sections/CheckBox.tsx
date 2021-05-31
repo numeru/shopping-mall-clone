@@ -1,16 +1,25 @@
 import React, { useState } from "react";
 import { Collapse, Checkbox } from "antd";
+import { Continents } from "./Datas";
 
 const { Panel } = Collapse;
 
-function CheckBox(props) {
-  const [Checked, setChecked] = useState([]);
+type Props = {
+  list: Continents[];
+  handleFilters: (
+    aFilter: string | number[],
+    category: "price" | "continents"
+  ) => void;
+};
 
-  const handleToggle = (value) => {
+function CheckBox({ list, handleFilters }: Props) {
+  const [Checked, setChecked] = useState<number[]>([]);
+
+  const handleToggle = (value: number) => {
     //누른 것의 Index를 구하고
     const currentIndex = Checked.indexOf(value);
     //전체 Checked된 State에서  현재 누른 Checkbox가 이미 있다면
-    const newChecked = [...Checked];
+    const newChecked: number[] = [...Checked];
 
     // State 넣어준다.
     if (currentIndex === -1) {
@@ -20,12 +29,11 @@ function CheckBox(props) {
       newChecked.splice(currentIndex, 1);
     }
     setChecked(newChecked);
-    props.handleFilters(newChecked);
+    handleFilters(newChecked, "continents");
   };
 
   const renderCheckboxLists = () =>
-    props.list &&
-    props.list.map((value, index) => (
+    list?.map((value, index) => (
       <React.Fragment key={index}>
         <Checkbox
           onChange={() => handleToggle(value._id)}

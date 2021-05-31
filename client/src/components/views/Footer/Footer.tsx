@@ -12,10 +12,7 @@ function Footer() {
         fontSize: "1rem",
       }}
     >
-      <p>
-        {" "}
-        Happy Coding
-      </p>
+      <p> Happy Coding</p>
     </div>
   );
 }

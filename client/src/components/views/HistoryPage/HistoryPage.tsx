@@ -1,6 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { UserState } from "_reducers/user_reducer";
 
-function HistoryPage(props) {
+function HistoryPage() {
+  const user = useSelector((state: { user: UserState }) => state.user);
+
   return (
     <div style={{ width: "80%", margin: "3rem auto" }}>
       <div style={{ textAlign: "center" }}>
@@ -19,16 +23,14 @@ function HistoryPage(props) {
         </thead>
 
         <tbody>
-          {props.user.userData &&
-            props.user.userData.history &&
-            props.user.userData.history.map((item) => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.price}</td>
-                <td>{item.quantity}</td>
-                <td>{item.dateOfPurchase}</td>
-              </tr>
-            ))}
+          {user.userData?.history?.map((item) => (
+            <tr key={item.id}>
+              <td>{item.id}</td>
+              <td>{item.price}</td>
+              <td>{item.quantity}</td>
+              <td>{item.dateOfPurchase}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

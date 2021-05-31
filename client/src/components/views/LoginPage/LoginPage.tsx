@@ -1,27 +1,27 @@
 import React, { useState } from "react";
-import { withRouter } from "react-router-dom";
-import { loginUser } from "../../../_actions/user_actions";
+import { auth, loginUser } from "../../../_actions/user_actions";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Form, Input, Button, Checkbox, Typography } from "antd";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+import { useEffect } from "react";
 
 const { Title } = Typography;
 
-function LoginPage(props) {
+function LoginPage() {
+  const history = useHistory();
   const dispatch = useDispatch();
-  const rememberMeChecked = localStorage.getItem("rememberMe") ? true : false;
 
   const [formErrorMessage, setFormErrorMessage] = useState("");
-  const [rememberMe, setRememberMe] = useState(rememberMeChecked);
 
-  const handleRememberMe = () => {
-    setRememberMe(!rememberMe);
-  };
-
-  const initialEmail = localStorage.getItem("rememberMe")
-    ? localStorage.getItem("rememberMe")
-    : "";
+  const [initialEmail, setInitialEmail] = useState("");
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberMe")
+      ? localStorage.getItem("rememberMe")
+      : "";
+    setInitialEmail(savedEmail!);
+  }, []);
 
   return (
     <Formik
@@ -37,35 +37,29 @@ function LoginPage(props) {
           .min(6, "Password must be at least 6 characters")
           .required("Password is required"),
       })}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          let dataToSubmit = {
-            email: values.email,
-            password: values.password,
-          };
+      onSubmit={async (values, { setSubmitting }) => {
+        const dataToSubmit = {
+          email: values.email,
+          password: values.password,
+        };
 
-          dispatch(loginUser(dataToSubmit))
-            .then((response) => {
-              if (response.payload.loginSuccess) {
-                window.localStorage.setItem("userId", response.payload.userId);
-                if (rememberMe === true) {
-                  window.localStorage.setItem("rememberMe", values.id);
-                } else {
-                  localStorage.removeItem("rememberMe");
-                }
-                props.history.push("/");
-              } else {
-                setFormErrorMessage("Check out your Account or Password again");
-              }
-            })
-            .catch((err) => {
-              setFormErrorMessage("Check out your Account or Password again");
-              setTimeout(() => {
-                setFormErrorMessage("");
-              }, 3000);
+        try {
+          const result = await loginUser(dataToSubmit);
+          dispatch(result);
+          if (result.payload.loginSuccess) {
+            auth().then((result) => {
+              dispatch(result);
             });
+            setSubmitting(false);
+            history.push("/");
+          } else {
+            setFormErrorMessage("Check out your Account or Password again");
+            setSubmitting(false);
+          }
+        } catch (e) {
+          setFormErrorMessage("Check out your Account or Password again");
           setSubmitting(false);
-        }, 500);
+        }
       }}
     >
       {(props) => {
@@ -73,12 +67,10 @@ function LoginPage(props) {
           values,
           touched,
           errors,
-          dirty,
           isSubmitting,
           handleChange,
           handleBlur,
           handleSubmit,
-          handleReset,
         } = props;
         return (
           <div className="app">
@@ -139,13 +131,6 @@ function LoginPage(props) {
               )}
 
               <Form.Item>
-                <Checkbox
-                  id="rememberMe"
-                  onChange={handleRememberMe}
-                  checked={rememberMe}
-                >
-                  Remember me
-                </Checkbox>
                 <a
                   className="login-form-forgot"
                   href="/reset_user"
@@ -175,4 +160,4 @@ function LoginPage(props) {
   );
 }
 
-export default withRouter(LoginPage);
+export default LoginPage;

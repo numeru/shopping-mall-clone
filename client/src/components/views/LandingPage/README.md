@@ -22,7 +22,7 @@ checkbox, radiobox와 search로 조건에 맞는 상품만 불러온다.
 
 ##### 0. 기본 구성
 
-```
+```js
 {/* CheckBox */}
 <Checkbox
   list={continents}
@@ -78,26 +78,26 @@ const price = [
 
 - 상품을 담는 배열 products : 배열 안에 담긴 상품들이 화면에 보인다.
 
-```
+```js
 const [Products, setProducts] = useState([]);
 ```
 
 - 불러올 상품의 수를 정해주는 skip, limit : skip번째 상품부터 limit개를 불러온다.
 
-```
+```js
 const [Skip, setSkip] = useState(0);
 const [Limit, setLimit] = useState(8);
 ```
 
 - 불러온 상품의 갯수 postSize : postSize가 limit보다 작으면 불러올 수 있는 상품이 더이상 없음을 의미한다.
 
-```
+```js
 const [PostSize, setPostSize] = useState(0);
 ```
 
 - 불러올 상품의 옵션을 담은 객체 filter : post할 때 함께 보낸다.
 
-```
+```js
 const [Filters, setFilters] = useState({
   continents: [],
   price: [],
@@ -106,7 +106,7 @@ const [Filters, setFilters] = useState({
 
 - 검색한 문자열을 담는 searchTerm
 
-```
+```js
 const [SearchTerm, setSearchTerm] = useState("");
 ```
 
@@ -116,13 +116,13 @@ const [SearchTerm, setSearchTerm] = useState("");
 
 - 체크된 옵션의 index를 담은 배열 checked
 
-```
+```js
 const [Checked, setChecked] = useState([]);
 ```
 
 - 체크될 때 마다 checked와 부모 컴포넌트의 filters를 업데이트한다.
 
-```
+```js
 const handleToggle = (value) => {
   const currentIndex = Checked.indexOf(value);
   const newChecked = [...Checked];
@@ -146,13 +146,13 @@ const handleToggle = (value) => {
 
 - 체크된 옵션의 id를 담는 value : 한가지 옵션만 선택될 수 있다.
 
-```
+```js
 const [Value, setValue] = useState(0);
 ```
 
 - 체크될 때 마다 value와 부모 컴포넌트의 filters를 업데이트한다.
 
-```
+```js
 const handleChange = (event) => {
   setValue(event.target.value);
   props.handleFilters(event.target.value);
@@ -165,7 +165,7 @@ const handleChange = (event) => {
 
 - 입력한 문자열을 부모 컴포넌트의 searchTerm에 전달한다.
 
-```
+```js
 const searchHandler = (event) => {
   props.refreshFunction(event.currentTarget.value);
 };
@@ -177,20 +177,20 @@ const searchHandler = (event) => {
 
 - mount 직후 모든 products를 불러온다.
 
-```
+```js
 useEffect(() => {
-    let body = {
-      skip: Skip,
-      limit: Limit,
-    };
+  let body = {
+    skip: Skip,
+    limit: Limit,
+  };
 
-    getProducts(body);
+  getProducts(body);
 }, []);
 ```
 
 - 조건(body)에 맞는 products를 불러온다.
 
-```
+```js
 const getProducts = (body) => {
   axios.post("/api/product/products", body).then((response) => {
     if (response.data.success) {

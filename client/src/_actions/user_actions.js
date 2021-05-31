@@ -9,10 +9,10 @@ import {
   REMOVE_CART_ITEM,
   ON_SUCCESS_BUY,
 } from "./types";
-import { USER_SERVER } from "../components/Config.js";
+import { USER_SERVER } from "../components/config.ts";
 
-export function registerUser(dataToSubmit) {
-  const request = axios
+export async function registerUser(dataToSubmit) {
+  const request = await axios
     .post(`${USER_SERVER}/register`, dataToSubmit)
     .then((response) => response.data);
 
@@ -22,9 +22,11 @@ export function registerUser(dataToSubmit) {
   };
 }
 
-export function loginUser(dataToSubmit) {
-  const request = axios
-    .post(`${USER_SERVER}/login`, dataToSubmit)
+export async function loginUser(dataToSubmit) {
+  const request = await axios
+    .post(`${USER_SERVER}/login`, dataToSubmit, {
+      withCredentials: true,
+    })
     .then((response) => response.data);
 
   return {
@@ -33,8 +35,8 @@ export function loginUser(dataToSubmit) {
   };
 }
 
-export function auth() {
-  const request = axios
+export async function auth() {
+  const request = await axios
     .get(`${USER_SERVER}/auth`)
     .then((response) => response.data);
 
@@ -44,9 +46,11 @@ export function auth() {
   };
 }
 
-export function logoutUser() {
-  const request = axios
-    .get(`${USER_SERVER}/logout`)
+export async function logoutUser() {
+  const request = await axios
+    .get(`${USER_SERVER}/logout`, {
+      withCredentials: true,
+    })
     .then((response) => response.data);
 
   return {
@@ -92,8 +96,8 @@ export function getCartItems(cartItems, userCart) {
   };
 }
 
-export function removeCartItem(productId) {
-  const request = axios
+export async function removeCartItem(productId) {
+  const request = await axios
     .get(`/api/users/removeFromCart?id=${productId}`)
     .then((response) => {
       //productInfo ,  cart 정보를 조합해서   CartDetail을 만든다.
