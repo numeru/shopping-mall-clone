@@ -73,8 +73,8 @@ export function addToCart(id) {
   };
 }
 
-export function getCartItems(cartItems, userCart) {
-  const request = axios
+export async function getCartItems(cartItems, userCart) {
+  const request = await axios
     .get(`/api/product/products_by_id?id=${cartItems}&type=array`)
     .then((response) => {
       // CartItem들에 해당하는 정보들을

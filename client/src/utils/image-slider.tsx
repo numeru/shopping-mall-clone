@@ -1,9 +1,8 @@
 import React from "react";
 import { Carousel } from "antd";
-import { Images } from "_reducers/user_reducer";
 
 type Props = {
-  images: Images[];
+  images: string[];
 };
 
 function ImageSlider({ images }: Props) {

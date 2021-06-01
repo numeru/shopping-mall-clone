@@ -11,7 +11,7 @@ type Props = {
 function ProductInfo({ product }: Props) {
   const dispatch = useDispatch();
 
-  const clickHandler = () => {
+  const handleClick = () => {
     dispatch(addToCart(product._id));
   };
 
@@ -26,11 +26,10 @@ function ProductInfo({ product }: Props) {
         </Descriptions.Item>
       </Descriptions>
 
-      <br />
-      <br />
-      <br />
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button size="large" shape="round" onClick={clickHandler}>
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "3rem" }}
+      >
+        <Button size="large" shape="round" onClick={handleClick}>
           Add to Cart
         </Button>
       </div>

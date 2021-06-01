@@ -33,12 +33,16 @@ function DetailProductPage({ match }: Props) {
     description: "",
   });
 
-  useEffect(() => {
+  const getProductInfo = () => {
     axios
       .get(`/api/product/products_by_id?id=${productId}&type=single`)
       .then((response) => {
         setProduct(response.data[0]);
       });
+  };
+
+  useEffect(() => {
+    getProductInfo();
   }, []);
 
   return (

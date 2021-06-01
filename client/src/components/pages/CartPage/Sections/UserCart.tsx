@@ -1,23 +1,22 @@
 import React from "react";
-import { CartDetail, Images } from "_reducers/user_reducer";
-import "./UserCardBlock.css";
+import { CartDetail } from "_reducers/user_reducer";
+import "./UserCart.css";
 
 type Props = {
   products: CartDetail[];
   removeItem: (productId: string) => Promise<void>;
 };
 
-function UserCardBlock({ products, removeItem }: Props) {
-  const renderCartImage = (images: Images[]) => {
+function UserCart({ products, removeItem }: Props) {
+  const renderCartImage = (images: string[]) => {
     if (images.length > 0) {
-      let image = images[0];
+      const image = images[0];
       return `http://localhost:5000/${image}`;
     }
   };
 
   const renderItems = () =>
-    products &&
-    products.map((product, index) => (
+    products?.map((product, index) => (
       <tr key={index}>
         <td>
           <img
@@ -52,4 +51,4 @@ function UserCardBlock({ products, removeItem }: Props) {
   );
 }
 
-export default UserCardBlock;
+export default UserCart;

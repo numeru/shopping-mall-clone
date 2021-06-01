@@ -35,7 +35,7 @@ export type CartDetail = {
   continents: number;
   createdAt: string;
   description: string;
-  images: Images[];
+  images: string[];
   price: number;
   sold: number;
   title: string;
@@ -99,7 +99,7 @@ export default function (state: UserState = initialState, action: Action) {
     case AUTH_USER:
       return { ...state, userData: action.payload };
     case LOGOUT_USER:
-      return { ...state, loginSuccess: false };
+      return { ...state };
     case ADD_TO_CART:
       return {
         ...state,
