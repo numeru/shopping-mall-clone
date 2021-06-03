@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { registerUser } from "../../../_actions/user_actions";
 import { useDispatch } from "react-redux";
-import { Form, Input, Button } from "antd";
+import { Form, Input } from "antd";
 import { useHistory } from "react-router";
 
 const tailFormItemLayout = {
@@ -20,9 +20,28 @@ const tailFormItemLayout = {
   },
 };
 
+type RegisterFormData = {
+  email: string;
+  password: string;
+  name: string;
+  lastname: string;
+  image: string;
+};
+
 function RegisterPage() {
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const handleSubmitRegisterForm = async (dataToSubmit: RegisterFormData) => {
+    const result = await registerUser(dataToSubmit);
+    dispatch(result);
+    if (result.payload.success) {
+      history.push("/login");
+    } else {
+      alert(result.payload.err.errmsg);
+    }
+  };
+
   return (
     <Formik
       initialValues={{
@@ -45,7 +64,7 @@ function RegisterPage() {
           .oneOf([Yup.ref("password"), null], "Passwords must match")
           .required("Confirm Password is required"),
       })}
-      onSubmit={async (values, { setSubmitting }) => {
+      onSubmit={(values) => {
         const dataToSubmit = {
           email: values.email,
           password: values.password,
@@ -54,15 +73,7 @@ function RegisterPage() {
           image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`,
         };
 
-        const result = await registerUser(dataToSubmit);
-        dispatch(result);
-        if (result.payload.success) {
-          setSubmitting(false);
-          history.push("/login");
-        } else {
-          alert(result.payload.err.errmsg);
-          setSubmitting(false);
-        }
+        handleSubmitRegisterForm(dataToSubmit);
       }}
     >
       {(props) => {

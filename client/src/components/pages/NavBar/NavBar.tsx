@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import LeftMenu from "./Sections/LeftMenu";
-import RightMenu from "./Sections/RightMenu";
+import NavMenu from "./Sections/NavMenu";
 import { Drawer, Button } from "antd";
 import "./Sections/Navbar.css";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   const [visible, setVisible] = useState(false);
@@ -11,7 +11,7 @@ function NavBar() {
     setVisible(true);
   };
 
-  const onClose = () => {
+  const handleClose = () => {
     setVisible(false);
   };
 
@@ -21,32 +21,23 @@ function NavBar() {
       style={{ position: "fixed", zIndex: 5, width: "100%" }}
     >
       <div className="menu__logo">
-        <a href="/">Logo</a>
+        <Link to="/" className="menu__logo-link">
+          Logo
+        </Link>
       </div>
       <div className="menu__container">
-        <div className="menu_left">
-          <LeftMenu mode="horizontal" />
-        </div>
-        <div className="menu_rigth">
-          <RightMenu mode="horizontal" />
-        </div>
-        <Button
-          className="menu__mobile-button"
-          type="primary"
-          onClick={showDrawer}
-        >
-          menu
+        <Button className="menu__button" type="primary" onClick={showDrawer}>
+          Menu
         </Button>
         <Drawer
           title="Basic Drawer"
           placement="right"
           className="menu_drawer"
           closable={false}
-          onClose={onClose}
+          onClose={handleClose}
           visible={visible}
         >
-          <LeftMenu mode="inline" />
-          <RightMenu mode="inline" />
+          <NavMenu />
         </Drawer>
       </div>
     </nav>

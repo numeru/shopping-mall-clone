@@ -4,15 +4,15 @@ import { Input } from "antd";
 const { Search } = Input;
 
 type Props = {
-  refreshFunction: (newSearchTerm: string) => void;
+  updateSearchTerm: (newSearchTerm: string) => void;
 };
 
-function SearchFeature({ refreshFunction }: Props) {
-  const [SearchTerm, setSearchTerm] = useState("");
+function SearchFeature({ updateSearchTerm }: Props) {
+  const [searchTerm, setSearchTerm] = useState("");
 
   const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.currentTarget.value);
-    refreshFunction(event.currentTarget.value);
+    updateSearchTerm(event.currentTarget.value);
   };
 
   return (
@@ -21,7 +21,7 @@ function SearchFeature({ refreshFunction }: Props) {
         placeholder="input search text"
         onChange={searchHandler}
         style={{ width: 200 }}
-        value={SearchTerm}
+        value={searchTerm}
       />
     </div>
   );

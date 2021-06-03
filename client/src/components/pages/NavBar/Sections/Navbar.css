@@ -15,7 +15,7 @@
   float: left;
 }
 
-.menu__logo a {
+.menu__logo-link {
   display: inline-block;
   font-size: 20px;
   padding: 19px 20px;
@@ -24,7 +24,7 @@
 .menu__container {
   display: flex;
   flex: 1;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 
@@ -53,12 +53,11 @@
   float: right;
 }
 
-.menu__mobile-button {
+.menu__button {
   float: right;
   height: 32px;
   padding: 6px;
   margin-top: 8px;
-  display: none !important; /* use of important to overwrite ant-btn */
   background: #3e91f7;
 }
 
@@ -66,31 +65,18 @@
   padding: 0 !important;
 }
 
-/* align header of Drawer with header of page */
 .menu_drawer .ant-drawer-header {
   padding: 14px 24px !important;
 }
 
 @media (max-width: 767px) {
-  .menu__mobile-button {
-    display: inline-block !important;
-  }
-
-  .menu_left,
-  .menu_rigth {
-    display: none;
-  }
-
-  .menu__logo a {
+  .menu__logo-link {
     margin-left: -20px;
+    padding: 10px 20px;
   }
 
   .menu__container .ant-menu-item,
   .menu__container .ant-menu-submenu-title {
     padding: 1px 20px;
-  }
-
-  .menu__logo a {
-    padding: 10px 20px;
   }
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import FileUpload from "../../../utils/file-upload";
-import Axios from "axios";
+import FileUpload from "./Sections/FileUpload";
+import axios from "axios";
 import { useSelector } from "react-redux";
 import { UserState } from "_reducers/user_reducer";
 import { useHistory } from "react-router";
@@ -24,34 +24,31 @@ const UploadProductPage = () => {
   const [continents, setContinent] = useState(1);
   const [images, setImages] = useState<string[]>([]);
 
-  const titleChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.currentTarget.value);
   };
 
-  const descriptionChangeHandler = (
+  const handleChangeDescription = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setDescription(event.currentTarget.value);
   };
 
-  const priceChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(event.currentTarget.value);
   };
 
-  const continentChangeHandler = (
+  const handleChangeContinents = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setContinent(parseInt(event.currentTarget.value));
   };
 
-  // refreshFunction
   const updateImages = (newImages: string[]) => {
-    console.log(newImages);
     setImages(newImages);
   };
 
-  // submit
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitUploadForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (
@@ -64,10 +61,7 @@ const UploadProductPage = () => {
       return alert(" 모든 값을 넣어주셔야 합니다.");
     }
 
-    //서버에 채운 값들을 request로 보낸다.
-
     const body = {
-      //로그인 된 사람의 ID
       writer: user.userData._id,
       title,
       description,
@@ -76,7 +70,7 @@ const UploadProductPage = () => {
       continents,
     };
 
-    Axios.post("/api/product", body).then((response) => {
+    axios.post("/api/product", body).then((response) => {
       if (response.data.success) {
         alert("상품 업로드에 성공 했습니다.");
         history.push("/");
@@ -91,25 +85,25 @@ const UploadProductPage = () => {
         <h2> 여행 상품 업로드</h2>
       </div>
 
-      <form onSubmit={submitHandler}>
+      <form onSubmit={handleSubmitUploadForm}>
         {/* DropZone */}
-        <FileUpload refreshFunction={updateImages} />
+        <FileUpload updateImages={updateImages} />
 
         <br />
         <br />
         <label>이름</label>
-        <input onChange={titleChangeHandler} value={title} />
+        <input onChange={handleChangeTitle} value={title} />
         <br />
         <br />
         <label>설명</label>
-        <textarea onChange={descriptionChangeHandler} value={description} />
+        <textarea onChange={handleChangeDescription} value={description} />
         <br />
         <br />
         <label>가격($)</label>
-        <input onChange={priceChangeHandler} value={price} />
+        <input onChange={handleChangePrice} value={price} />
         <br />
         <br />
-        <select onChange={continentChangeHandler} value={continents}>
+        <select onChange={handleChangeContinents} value={continents}>
           {Continents.map((item) => (
             <option key={item.key} value={item.key}>
               {" "}

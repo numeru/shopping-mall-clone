@@ -5,18 +5,18 @@ import { Price } from "./Datas";
 const { Panel } = Collapse;
 
 type Props = {
-  list: Price[];
+  price: Price[];
   handleFilters: (
     aFilter: string | number[],
     category: "price" | "continents"
   ) => void;
 };
 
-function RadioBox({ list, handleFilters }: Props) {
+function RadioBox({ price, handleFilters }: Props) {
   const [checkedPrice, setCheckedPrice] = useState(0);
 
   const renderRadioBox = () =>
-    list?.map((value) => (
+    price?.map((value) => (
       <Radio key={value._id} value={value._id}>
         {" "}
         {value.name}{" "}

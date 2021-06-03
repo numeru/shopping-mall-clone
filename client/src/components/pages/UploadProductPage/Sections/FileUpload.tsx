@@ -3,14 +3,12 @@ import Dropzone from "react-dropzone";
 import axios from "axios";
 
 type Props = {
-  refreshFunction: (newImages: string[]) => void;
+  updateImages: (newImages: string[]) => void;
 };
 
-function FileUpload({ refreshFunction }: Props) {
-  // 이미지의 filePath를 저장하는 배열
+function FileUpload({ updateImages }: Props) {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
-  // File을 업로드 했을 때
   const handleDropImage = (files: File[]) => {
     const formData = new FormData();
 
@@ -19,19 +17,21 @@ function FileUpload({ refreshFunction }: Props) {
     axios.post("/api/product/image", formData).then((response) => {
       if (response.data.success) {
         setUploadedImages([...uploadedImages, response.data.filePath]);
-        refreshFunction([...uploadedImages, response.data.filePath]);
+        updateImages([...uploadedImages, response.data.filePath]);
       } else {
         alert("파일을 저장하는데 실패했습니다.");
       }
     });
   };
 
-  const handleDelete = (image: string) => {
+  const handleDeleteImage = (image: string) => {
     const currentIndex = uploadedImages.indexOf(image);
-    let newuploadedImages = [...uploadedImages];
+    const newuploadedImages = [...uploadedImages];
+
     newuploadedImages.splice(currentIndex, 1);
+
     setUploadedImages(newuploadedImages);
-    refreshFunction(newuploadedImages);
+    updateImages(newuploadedImages);
   };
 
   return (
@@ -51,7 +51,9 @@ function FileUpload({ refreshFunction }: Props) {
             {...getRootProps()}
           >
             <input {...getInputProps()} />
-            <button type="button" style={{ fontSize: "0.5rem" }}>upload</button>
+            <button type="button" style={{ fontSize: "0.5rem" }}>
+              upload
+            </button>
           </div>
         )}
       </Dropzone>
@@ -66,7 +68,7 @@ function FileUpload({ refreshFunction }: Props) {
         }}
       >
         {uploadedImages.map((image, index) => (
-          <div onClick={() => handleDelete(image)} key={index}>
+          <div onClick={() => handleDeleteImage(image)} key={index}>
             <img
               style={{ minWidth: "300px", width: "300px", height: "240px" }}
               src={`http://localhost:5000/${image}`}

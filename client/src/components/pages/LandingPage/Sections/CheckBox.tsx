@@ -5,25 +5,25 @@ import { Continents } from "./Datas";
 const { Panel } = Collapse;
 
 type Props = {
-  list: Continents[];
+  continents: Continents[];
   handleFilters: (
     aFilter: string | number[],
     category: "price" | "continents"
   ) => void;
 };
 
-function CheckBox({ list, handleFilters }: Props) {
-  const [Checked, setChecked] = useState<number[]>([]);
+function CheckBox({ continents, handleFilters }: Props) {
+  const [checkedContinents, setChecked] = useState<number[]>([]);
 
-  const handleToggle = (value: number) => {
+  const handleToggle = (toggledOption: number) => {
     //누른 것의 Index를 구하고
-    const currentIndex = Checked.indexOf(value);
+    const currentIndex = checkedContinents.indexOf(toggledOption);
     //전체 Checked된 State에서  현재 누른 Checkbox가 이미 있다면
-    const newChecked: number[] = [...Checked];
+    const newChecked: number[] = [...checkedContinents];
 
     // State 넣어준다.
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(toggledOption);
       // 빼주고
     } else {
       newChecked.splice(currentIndex, 1);
@@ -33,11 +33,11 @@ function CheckBox({ list, handleFilters }: Props) {
   };
 
   const renderCheckboxLists = () =>
-    list?.map((value, index) => (
-      <React.Fragment key={index}>
+    continents?.map((value) => (
+      <React.Fragment key={value._id}>
         <Checkbox
           onChange={() => handleToggle(value._id)}
-          checked={Checked.indexOf(value._id) === -1 ? false : true}
+          checked={checkedContinents.indexOf(value._id) === -1 ? false : true}
         />
         <span>{value.name}</span>
       </React.Fragment>

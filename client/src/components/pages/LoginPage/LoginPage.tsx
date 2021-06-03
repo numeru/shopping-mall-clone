@@ -2,12 +2,17 @@ import React, { useState } from "react";
 import { auth, loginUser } from "../../../_actions/user_actions";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { Form, Input, Button, Checkbox, Typography } from "antd";
+import { Form, Input, Button, Typography } from "antd";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const { Title } = Typography;
+
+type LoginFormData = {
+  email: string;
+  password: string;
+};
 
 function LoginPage() {
   const history = useHistory();
@@ -15,18 +20,27 @@ function LoginPage() {
 
   const [formErrorMessage, setFormErrorMessage] = useState("");
 
-  const [initialEmail, setInitialEmail] = useState("");
-  useEffect(() => {
-    const savedEmail = localStorage.getItem("rememberMe")
-      ? localStorage.getItem("rememberMe")
-      : "";
-    setInitialEmail(savedEmail!);
-  }, []);
+  const handleSubmitLoginForm = async (dataToSubmit: LoginFormData) => {
+    try {
+      const result = await loginUser(dataToSubmit);
+      dispatch(result);
+      if (result.payload.loginSuccess) {
+        auth().then((result) => {
+          dispatch(result);
+        });
+        history.push("/");
+      } else {
+        setFormErrorMessage("Check out your Account or Password again");
+      }
+    } catch (e) {
+      setFormErrorMessage("Check out your Account or Password again");
+    }
+  };
 
   return (
     <Formik
       initialValues={{
-        email: initialEmail,
+        email: "",
         password: "",
       }}
       validationSchema={Yup.object().shape({
@@ -37,29 +51,13 @@ function LoginPage() {
           .min(6, "Password must be at least 6 characters")
           .required("Password is required"),
       })}
-      onSubmit={async (values, { setSubmitting }) => {
+      onSubmit={(values) => {
         const dataToSubmit = {
           email: values.email,
           password: values.password,
         };
 
-        try {
-          const result = await loginUser(dataToSubmit);
-          dispatch(result);
-          if (result.payload.loginSuccess) {
-            auth().then((result) => {
-              dispatch(result);
-            });
-            setSubmitting(false);
-            history.push("/");
-          } else {
-            setFormErrorMessage("Check out your Account or Password again");
-            setSubmitting(false);
-          }
-        } catch (e) {
-          setFormErrorMessage("Check out your Account or Password again");
-          setSubmitting(false);
-        }
+        handleSubmitLoginForm(dataToSubmit);
       }}
     >
       {(props) => {
@@ -131,13 +129,6 @@ function LoginPage() {
               )}
 
               <Form.Item>
-                <a
-                  className="login-form-forgot"
-                  href="/reset_user"
-                  style={{ float: "right" }}
-                >
-                  forgot password
-                </a>
                 <div>
                   <Button
                     type="primary"
@@ -150,7 +141,7 @@ function LoginPage() {
                     Log in
                   </Button>
                 </div>
-                Or <a href="/register">register now!</a>
+                Or <Link to="/register">register now!</Link>
               </Form.Item>
             </form>
           </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Col, Card, Row } from "antd";
 import Meta from "antd/lib/card/Meta";
-import ImageSlider from "../../../utils/image-slider";
+import ImageSlider from "./Sections/ImageSlider";
 import Checkbox from "./Sections/CheckBox";
 import Radiobox from "./Sections/RadioBox";
 import SearchFeature from "./Sections/SearchFeature";
@@ -35,7 +35,6 @@ function LandingPage() {
     continents: [],
     price: [],
   });
-  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const body = {
@@ -74,22 +73,6 @@ function LandingPage() {
     setSkip(newSkip);
   };
 
-  const renderCards = products.map((product, index) => {
-    return (
-      <Col lg={6} md={8} xs={24} key={index}>
-        <Card
-          cover={
-            <a href={`/product/${product._id}`}>
-              <ImageSlider images={product.images} />
-            </a>
-          }
-        >
-          <Meta title={product.title} description={`$${product.price}`} />
-        </Card>
-      </Col>
-    );
-  });
-
   const showFilteredResults = (filters: Filter) => {
     const body = {
       skip: 0,
@@ -103,28 +86,23 @@ function LandingPage() {
 
   const handlePrice = (value: string): number[] => {
     const data = price;
-    let array: number[] = [];
 
-    for (let key in data) {
-      if (data[key]._id === parseInt(value, 10)) {
-        array = data[key].array;
-      }
-    }
+    const array = data.find((d) => d._id === parseInt(value, 10))!.array;
     return array;
   };
 
   const handleFilters = (
     aFilter: string | number[],
-    category: "price" | "continents"
+    aCategory: "price" | "continents"
   ) => {
     let newFilters: Filter = { ...filters };
 
-    if (category === "price") {
+    if (aCategory === "price") {
       const priceValues = handlePrice(aFilter as string);
-      newFilters[category] = priceValues;
+      newFilters[aCategory] = priceValues;
     }
-    if (category === "continents") {
-      newFilters[category] = aFilter as number[];
+    if (aCategory === "continents") {
+      newFilters[aCategory] = aFilter as number[];
     }
     showFilteredResults(newFilters);
     setFilters(newFilters);
@@ -139,9 +117,24 @@ function LandingPage() {
     };
 
     setSkip(0);
-    setSearchTerm(newSearchTerm);
     getProducts(body);
   };
+
+  const renderProductImageSlider = products.map((product) => {
+    return (
+      <Col lg={6} md={8} xs={24} key={product._id}>
+        <Card
+          cover={
+            <a href={`/product/${product._id}`}>
+              <ImageSlider images={product.images} />
+            </a>
+          }
+        >
+          <Meta title={product.title} description={`$${product.price}`} />
+        </Card>
+      </Col>
+    );
+  });
 
   return (
     <div style={{ width: "75%", margin: "3rem auto" }}>
@@ -154,11 +147,11 @@ function LandingPage() {
       <Row gutter={[16, 16]}>
         <Col lg={12} xs={24}>
           {/* CheckBox */}
-          <Checkbox list={continents} handleFilters={handleFilters} />
+          <Checkbox continents={continents} handleFilters={handleFilters} />
         </Col>
         <Col lg={12} xs={24}>
           {/* RadioBox */}
-          <Radiobox list={price} handleFilters={handleFilters} />
+          <Radiobox price={price} handleFilters={handleFilters} />
         </Col>
       </Row>
 
@@ -171,12 +164,12 @@ function LandingPage() {
           margin: "1rem auto",
         }}
       >
-        <SearchFeature refreshFunction={updateSearchTerm} />
+        <SearchFeature updateSearchTerm={updateSearchTerm} />
       </div>
 
       {/* Cards */}
 
-      <Row gutter={[16, 16]}>{renderCards}</Row>
+      <Row gutter={[16, 16]}>{renderProductImageSlider}</Row>
 
       <br />
 

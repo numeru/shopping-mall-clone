@@ -4,15 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { auth, logoutUser } from "_actions/user_actions";
-import { MenuMode } from "antd/lib/menu";
 import { UserState } from "_reducers/user_reducer";
-import { useEffect } from "react";
 
-type Props = {
-  mode: MenuMode;
-};
-
-function RightMenu({ mode }: Props) {
+function NavMenu() {
   const history = useHistory();
   const user = useSelector((state: { user: UserState }) => state.user);
   const dispatch = useDispatch();
@@ -31,7 +25,7 @@ function RightMenu({ mode }: Props) {
 
   if (!user.userData?.isAuth) {
     return (
-      <Menu mode={mode}>
+      <Menu mode="inline">
         <Menu.Item key="mail">
           <Link to="/login">Signin</Link>
         </Menu.Item>
@@ -42,7 +36,7 @@ function RightMenu({ mode }: Props) {
     );
   } else {
     return (
-      <Menu mode={mode}>
+      <Menu mode="inline">
         <Menu.Item key="upload">
           <Link to="/product/upload">Upload</Link>
         </Menu.Item>
@@ -62,4 +56,4 @@ function RightMenu({ mode }: Props) {
   }
 }
 
-export default RightMenu;
+export default NavMenu;
