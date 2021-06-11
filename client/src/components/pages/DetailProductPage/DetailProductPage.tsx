@@ -3,7 +3,9 @@ import axios from "axios";
 import ProductImage from "./Sections/ProductImage";
 import ProductInfo from "./Sections/ProductInfo";
 import { Row, Col } from "antd";
-import { CartDetail } from "_reducers/user_reducer";
+import { CartDetail, UserState } from "_reducers/user_reducer";
+import ProductComment from "./Sections/ProductComment";
+import { useSelector } from "react-redux";
 
 type Match<P> = {
   params: P;
@@ -12,11 +14,20 @@ type Match<P> = {
   url: string;
 };
 
+export type Comment = {
+  content: string;
+  createdAt: string;
+  postId: string;
+  updatedAt: string;
+  _id: string;
+};
+
 type Props = {
   match: Match<{ productId: string }>;
 };
 
 function DetailProductPage({ match }: Props) {
+  const user = useSelector((state: { user: UserState }) => state.user);
   const productId = match.params.productId;
 
   const [product, setProduct] = useState<CartDetail>({
@@ -33,6 +44,8 @@ function DetailProductPage({ match }: Props) {
     description: "",
   });
 
+  const [commentList, setCommentList] = useState<Comment[]>([]);
+
   const getProductInfo = () => {
     axios
       .get(`/api/product/products_by_id?id=${productId}&type=single`)
@@ -41,8 +54,25 @@ function DetailProductPage({ match }: Props) {
       });
   };
 
+  const getCommentList = () => {
+    const data = {
+      productId,
+    };
+
+    axios.post("/api/comment/getComments", data).then((response) => {
+      if (response.data.success) {
+        console.log("response.data.comments", response.data.comments);
+        setCommentList(response.data.comments);
+      } else {
+        alert("Failed to get video Info");
+      }
+    });
+  };
+
   useEffect(() => {
+    console.log(user);
     getProductInfo();
+    getCommentList();
   }, []);
 
   return (
@@ -63,6 +93,12 @@ function DetailProductPage({ match }: Props) {
           <ProductInfo product={product} />
         </Col>
       </Row>
+      <ProductComment
+        user={user}
+        commentList={commentList}
+        setCommentList={setCommentList}
+        productId={productId}
+      />
     </div>
   );
 }
