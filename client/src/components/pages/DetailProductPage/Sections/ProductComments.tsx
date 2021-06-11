@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { UserState } from "_reducers/user_reducer";
 import { Comment } from "../DetailProductPage";
+import SingleComment from "./SingleComment";
 
 type Props = {
   user: UserState;
@@ -12,7 +13,7 @@ type Props = {
   productId: string;
 };
 
-const ProductComment = ({
+const ProductComments = ({
   user,
   commentList,
   setCommentList,
@@ -37,17 +38,23 @@ const ProductComment = ({
       }
     });
   };
+
   return (
-    <section style={{ width: "100%", height: "40%", padding: "1rem 1.5rem" }}>
+    <section style={{ width: "100%", padding: "1rem 1.5rem" }}>
       <ul>
         {commentList ? (
-          commentList.map((comment) => (
-            <li key={comment._id}>
-              {comment.content}
-              <br />
-              {comment.createdAt.substring(0, 19).replace("T", " ")}
-            </li>
-          ))
+          commentList.map((comment) => {
+            if (!comment.responseTo) {
+              return (
+                <SingleComment
+                  key={comment._id}
+                  commentList={commentList}
+                  comment={comment}
+                  user={user}
+                />
+              );
+            }
+          })
         ) : (
           <p>댓글이 없습니다.</p>
         )}
@@ -66,4 +73,4 @@ const ProductComment = ({
   );
 };
 
-export default ProductComment;
+export default ProductComments;

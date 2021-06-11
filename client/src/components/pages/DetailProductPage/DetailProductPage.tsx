@@ -4,7 +4,7 @@ import ProductImage from "./Sections/ProductImage";
 import ProductInfo from "./Sections/ProductInfo";
 import { Row, Col } from "antd";
 import { CartDetail, UserState } from "_reducers/user_reducer";
-import ProductComment from "./Sections/ProductComment";
+import ProductComments from "./Sections/ProductComments";
 import { useSelector } from "react-redux";
 
 type Match<P> = {
@@ -18,6 +18,7 @@ export type Comment = {
   content: string;
   createdAt: string;
   postId: string;
+  responseTo?: string;
   updatedAt: string;
   _id: string;
 };
@@ -61,7 +62,6 @@ function DetailProductPage({ match }: Props) {
 
     axios.post("/api/comment/getComments", data).then((response) => {
       if (response.data.success) {
-        console.log("response.data.comments", response.data.comments);
         setCommentList(response.data.comments);
       } else {
         alert("Failed to get video Info");
@@ -70,7 +70,6 @@ function DetailProductPage({ match }: Props) {
   };
 
   useEffect(() => {
-    console.log(user);
     getProductInfo();
     getCommentList();
   }, []);
@@ -93,7 +92,7 @@ function DetailProductPage({ match }: Props) {
           <ProductInfo product={product} />
         </Col>
       </Row>
-      <ProductComment
+      <ProductComments
         user={user}
         commentList={commentList}
         setCommentList={setCommentList}
